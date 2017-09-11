@@ -71,16 +71,32 @@ class SlackUp():
         return True
     def post(self, message):
         """ Post to slack with current config """
-        print(self.slack.api_call(
+        response = self.slack.api_call(
             "chat.postMessage", channel=self.cfg['slack_channel'], text=message,
             username=self.cfg['slack_username'], icon_emoji=self.cfg['slack_emoji']
-        ))
+        )
+        if 'ok' in response:
+            if response['ok']:
+              return True
+            else:
+              #logging.error("Error sending message: %s" % (response['error']))
+              return False
+        else:
+            return False
     def post_attachment(self, message):
         """ Post to slack with 'message' as attachment with current config """
-        print(self.slack.api_call(
+        response = self.slack.api_call(
             "chat.postMessage", channel=self.cfg['slack_channel'], attachments=[{"text": message}],
             username=self.cfg['slack_username'], icon_emoji=self.cfg['slack_emoji']
-        ))
+        )
+        if 'ok' in response:
+            if response['ok']:
+              return True
+            else:
+              #logging.error("Error sending message: %s" % (response['error']))
+              return False
+        else:
+            return False
 
 def main():
     """ Main routine - parses command line and posts to Slack """
@@ -124,9 +140,13 @@ def main():
     slack = SlackUp(cfg)
 
     if args.snippet:
-        slack.post_attachment(message)
+        if not slack.post_attachment(message):
+            print("Error: Failed to post message")
+            sys.exit(1)
     else:
-        slack.post(message)
+        if not slack.post(message):
+            print("Error: Failed to post message")
+            sys.exit(1)
 
 if __name__ == "__main__":
     main()
