@@ -14,7 +14,7 @@ _~/.slackup.cfg_ or _/etc/slackup.cfg_ will be read if they exist. _~/.slackup.c
 Usage
 =====
 
-    usage: slackup [-h] [-v] [-c CHANNEL] [-t TOKEN] [-u USERNAME] [-s] [message]
+    usage: slackup [-h] [-v] [-c CHANNEL] [-t TOKEN] [-u USERNAME] [-s] [-f FILE] [message]
     
     positional arguments:
       message               message to post to slack
@@ -29,10 +29,13 @@ Usage
       -u USERNAME, --username USERNAME
                             set Slack username to post as
       -s, --snippet         Post message as attachment/snippet
+      -f FILE, --file FILE  read message from file or stdin
 
 
 Examples
 ========
 
-    echo 'HELLO' | slackup -c 'someotherchannel'
+    echo 'HELLO' | slackup -c 'someotherchannel' -f -
+    slackup "greetings fellow kids"
+    slackup -s -f inputfile.txt
     
