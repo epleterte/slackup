@@ -1,0 +1,100 @@
+#!/usr/bin/env python
+# Copyright Christian Bryn 2016-2017 <chr.bryn@gmail.com>
+
+#if python.ver == '2':
+from __future__ import print_function
+#import fileinput
+import argparse
+import socket
+import sys
+#import json
+import os
+import yaml
+from slackclient import SlackClient
+
+def main():
+    """ Main routine - parses command line and posts to Slack """
+    config_path = os.path.expanduser("~/.slackup.yml")
+    if not os.path.exists(config_path):
+        config_path = "/etc/slackup.yml"
+    ## config defaults
+    # slack_path in format '/services/APIKEY
+    cfg = {
+        'slack_token': '',
+        'slack_channel': '#general',
+        'slack_username': 'slackup',
+        'slack_emoji': ':robot_face:'
+    }
+
+    if os.path.exists(config_path):
+        if oct(os.stat('/etc/slackup.yml').st_mode)[-4:] != '0644':
+            print('%s does not have the correct permissions - should be 0644' % (config_path))
+            sys.exit(1)
+        with open(config_path, 'r') as ymlfile:
+            yml = yaml.load(ymlfile)
+            # merge config:
+            cfg.update(yml)
+    else:
+        print('no config file found at %s, using defaults' % config_path)
+
+    if 'SLACK_CHANNEL' in os.environ:
+        cfg['slack_channel'] = os.environ['SLACK_CHANNEL']
+    if 'SLACK_TOKEN' in os.environ:
+        cfg['slack_token'] = os.environ['SLACK_TOKEN']
+    if 'SLACK_MESSAGE' in os.environ:
+        cfg['slack_message'] = os.environ['SLACK_MESSAGE']
+
+    parser = argparse.ArgumentParser()
+    #parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
+    parser.add_argument("-v", "--verbose", help="increase output verbosity", action="count")
+    parser.add_argument("-c", "--channel", help="specify channel to post to")
+    parser.add_argument("-t", "--token", help="set token to use")
+    #parser.add_argument("-t", "--prefix", nargs='?', const="[ %s ] " % (socket.getfqdn()), help="Prefix - default is the local hostname. Use with no argument for no prefix.", default="")
+    parser.add_argument("-u", "--username", help="set Slack username to post as")
+    parser.add_argument("-s", "--snippet", help="Post message as attachment/snippet", action="store_true")
+    #parser.add_argument("-m", "--message", help="message to post to slack")
+    parser.add_argument("message", nargs='?', type=argparse.FileType('r'), default=sys.stdin, help="message to post to slack")
+    args = parser.parse_args()
+    if args.verbose:
+        print("verbosity turned on")
+    if args.channel:
+        cfg['slack_channel'] = args.channel
+    if args.token:
+        cfg['slack_token'] = args.token
+    if not args.message:
+        print("No message supplied!")
+        sys.exit(1)
+
+
+    if cfg['slack_channel'] == '':
+        print("No channel given!")
+        sys.exit(1)
+    if cfg['slack_token'] == '':
+        print("No token supplied!")
+        sys.exit(1)
+
+    if not cfg['slack_channel'].startswith('#'):
+        cfg['slack_channel'] = '#' + cfg['slack_channel']
+
+    hostname = socket.getfqdn()
+    message = "[ %s ] %s" % (hostname, args.message)
+
+
+    slack = SlackClient(cfg['slack_token'])
+    if args.snippet:
+      #print(slack.api_call(
+      #    "chat.postMessage", channel=cfg['slack_channel'], text=message.splitlines()[0], attachments=[{"text": message}],
+      #    username=cfg['slack_username'], icon_emoji=cfg['slack_emoji']
+      #))
+        print(slack.api_call(
+            "chat.postMessage", channel=cfg['slack_channel'], attachments=[{"text": message}],
+            username=cfg['slack_username'], icon_emoji=cfg['slack_emoji']
+        ))
+    else:
+        print(slack.api_call(
+            "chat.postMessage", channel=cfg['slack_channel'], text=message,
+            username=cfg['slack_username'], icon_emoji=cfg['slack_emoji']
+        ))
+
+if __name__ == "__main__":
+    main()
