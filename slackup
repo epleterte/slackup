@@ -25,7 +25,7 @@ class SlackUp():
         if config:
             self.cfg.update(config)
         if not self._validate():
-            raise 
+            raise
             return False
         self.slack = SlackClient(self.cfg['slack_token'])
     def _validate(self):
@@ -40,8 +40,8 @@ class SlackUp():
     def post_attachment(self, message):
         """ Post to slack with 'message' as attachment with current config """
         print(self.slack.api_call(
-            "chat.postMessage", channel=cfg['slack_channel'], attachments=[{"text": message}],
-            username=cfg['slack_username'], icon_emoji=cfg['slack_emoji']
+            "chat.postMessage", channel=self.cfg['slack_channel'], attachments=[{"text": message}],
+            username=cfg['slack_username'], icon_emoji=self.cfg['slack_emoji']
         ))
 
 def main():
@@ -50,7 +50,6 @@ def main():
     if not os.path.exists(config_path):
         config_path = "/etc/slackup.yml"
     ## config defaults
-    # slack_path in format '/services/APIKEY
     cfg = {
         'slack_token': '',
         'slack_channel': '#general',
@@ -111,22 +110,12 @@ def main():
     hostname = socket.getfqdn()
     message = "[ %s ] %s" % (hostname, args.message)
 
+    slack = SlackUp(cfg)
 
-    slack = SlackClient(cfg['slack_token'])
     if args.snippet:
-      #print(slack.api_call(
-      #    "chat.postMessage", channel=cfg['slack_channel'], text=message.splitlines()[0], attachments=[{"text": message}],
-      #    username=cfg['slack_username'], icon_emoji=cfg['slack_emoji']
-      #))
-        print(slack.api_call(
-            "chat.postMessage", channel=cfg['slack_channel'], attachments=[{"text": message}],
-            username=cfg['slack_username'], icon_emoji=cfg['slack_emoji']
-        ))
+        slack.post_attachment(message)
     else:
-        print(slack.api_call(
-            "chat.postMessage", channel=cfg['slack_channel'], text=message,
-            username=cfg['slack_username'], icon_emoji=cfg['slack_emoji']
-        ))
+        slack.post(message)
 
 if __name__ == "__main__":
     main()
