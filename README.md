@@ -14,4 +14,25 @@ _~/.slackup.cfg_ or _/etc/slackup.cfg_ will be read if they exist. _~/.slackup.c
 Usage
 =====
 
-    echo 'HELLO' | ./slackup -c 'someotherchannel'
+    usage: slackup [-h] [-v] [-c CHANNEL] [-t TOKEN] [-u USERNAME] [-s] [message]
+    
+    positional arguments:
+      message               message to post to slack
+    
+    optional arguments:
+      -h, --help            show this help message and exit
+      -v, --verbose         increase output verbosity
+      -c CHANNEL, --channel CHANNEL
+                            specify channel to post to
+      -t TOKEN, --token TOKEN
+                            set token to use
+      -u USERNAME, --username USERNAME
+                            set Slack username to post as
+      -s, --snippet         Post message as attachment/snippet
+
+
+Examples
+========
+
+    echo 'HELLO' | slackup -c 'someotherchannel'
+    
