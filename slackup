@@ -40,10 +40,14 @@ class SlackUp():
             print('no config file found at %s, using defaults' % config_path)
 
         ## read config from environment
-        if 'SLACK_CHANNEL' in os.environ:
-            self.cfg['slack_channel'] = os.environ['SLACK_CHANNEL']
         if 'SLACK_TOKEN' in os.environ:
             self.cfg['slack_token'] = os.environ['SLACK_TOKEN']
+        if 'SLACK_CHANNEL' in os.environ:
+            self.cfg['slack_channel'] = os.environ['SLACK_CHANNEL']
+        if 'SLACK_USERNAME' in os.environ:
+            self.cfg['slack_username'] = os.environ['SLACK_USERNAME']
+        if 'SLACK_EMOJI' in os.environ:
+            self.cfg['slack_emoji'] = os.environ['SLACK_EMOJI']
         if 'SLACK_MESSAGE' in os.environ:
             self.cfg['slack_message'] = os.environ['SLACK_MESSAGE']
 
