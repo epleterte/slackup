@@ -63,7 +63,6 @@ class SlackUp():
         self.slack = SlackClient(self.cfg['slack_token'])
 
     def _validate(self):
-        print("VALIDATING")
         if self.cfg['slack_token'] == '':
           return False
         if self.cfg['slack_channel'] == '':
@@ -112,7 +111,11 @@ def main():
     parser.add_argument("-u", "--username", help="set Slack username to post as")
     parser.add_argument("-s", "--snippet", help="Post message as attachment/snippet", action="store_true")
     #parser.add_argument("-m", "--message", help="message to post to slack")
-    parser.add_argument("message", nargs='?', type=argparse.FileType('r'), default=sys.stdin, help="message to post to slack")
+    #parser.add_argument("-f", "--file", nargs='?', type=argparse.FileType('r'), default=sys.stdin, help="read message from file or stdin")
+    #parser.add_argument("-f", "--file", type=argparse.FileType('r'), default=sys.stdin, help="read message from file or stdin")
+    parser.add_argument("-f", "--file", type=argparse.FileType('r'), help="read message from file or stdin")
+    #parser.add_argument("message", nargs='?', type=argparse.FileType('r'), default=sys.stdin, help="message to post to slack")
+    parser.add_argument("message", nargs='?', default=None, help="message to post to slack")
 
     args = parser.parse_args()
 
@@ -122,6 +125,8 @@ def main():
         cfg['slack_channel'] = args.channel
     if args.token:
         cfg['slack_token'] = args.token
+    if args.file:
+        args.message = args.file.read()
     if not args.message:
         print("No message supplied!")
         sys.exit(1)
@@ -134,8 +139,10 @@ def main():
     #    sys.exit(1)
 
     hostname = socket.getfqdn()
-    #message = "[ %s ] %s" % (hostname, args.message)
-    message = "[ %s ] %s" % (hostname, args.message.read())
+    #print(args.message.type)
+    print(args.message)
+    message = "[ %s ] %s" % (hostname, args.message)
+    #message = "[ %s ] %s" % (hostname, args.message.read())
 
     slack = SlackUp(cfg)
 
