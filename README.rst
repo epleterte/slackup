@@ -5,7 +5,7 @@ slackup
 Slackup is a simple CLI Slack client.
 It supports reading config from a config file, from environment variables and from parameters passed directly to the script.
 
-Slackup will read from file if one is passed with `-f`. If both "message" and file is specified, file input takes precedence. Use `-f -` to read from STDIN.
+Slackup will read from file if one is passed with ``-f``. If both "message" and file is specified, file input takes precedence. Use ``-f -`` to read from STDIN.
 
 ======
 Config
