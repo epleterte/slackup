@@ -10,11 +10,18 @@ import sys
 #import json
 import os
 import yaml
+import logging
+
 from slackclient import SlackClient
 
 class SlackUp():
     """ Wrapper around SlackClient """
     def __init__(self, config):
+        loglevel = 'warning'
+        loglevel_numeric = getattr(logging, loglevel.upper(), None)
+        if not isinstance(loglevel_numeric, int):
+            raise ValueError('Invalid log level: %s' % loglevel)
+        logging.basicConfig(level=loglevel_numeric)
         ## config defaults
         self.cfg = {
             'slack_token': '',
@@ -82,7 +89,7 @@ class SlackUp():
             if response['ok']:
               return True
             else:
-              #logging.error("Error sending message: %s" % (response['error']))
+              logging.error("Error sending message: %s" % (response['error']))
               return False
         else:
             return False
@@ -96,7 +103,7 @@ class SlackUp():
             if response['ok']:
               return True
             else:
-              #logging.error("Error sending message: %s" % (response['error']))
+              logging.error("Error sending message: %s" % (response['error']))
               return False
         else:
             return False
