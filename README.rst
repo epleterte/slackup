@@ -19,6 +19,7 @@ Config
     slack_emoji: ':robot_face:'
 
 Config can also be specified via environment variables. These will override config file entries if present:
+::
 
     SLACK_TOKEN
     SLACK_CHANNEL
