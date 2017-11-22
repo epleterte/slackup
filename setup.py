@@ -10,6 +10,7 @@ setup(name='slackup',
       author='Christian Bryn',
       author_email='chr.bryn@gmail.com',
       url='https://github.com/epleterte/slackup',
+      download_url='https://github.com/epleterte/slackup/archive/0.3.tar.gz',
       platform='Linux',
       py_modules=['slackup'],
       keywords=['slack']
