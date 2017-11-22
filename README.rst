@@ -10,7 +10,7 @@ Slackup will read from file if one is passed with ``-f``. If both "message" and 
 ======
 Config
 ======
-`~/.slackup.cfg` or `/etc/slackup.cfg` will be read if they exist. `~/.slackup.cfg` takes precedence if it is found.
+``~/.slackup.cfg`` or ``/etc/slackup.cfg`` will be read if they exist. ``~/.slackup.cfg`` takes precedence if it is found.
 ::
 
     slack_token: 'xoxp-YOUR-TOKEN-HERE'
