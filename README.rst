@@ -58,7 +58,12 @@ Examples
 ========
 ::
 
+    # Command line usage example
     echo 'HELLO' | slackops -c 'someotherchannel' -f -
     slackops "greetings fellow kids"
     slackops -s -f inputfile.txt
-    
+
+    # ...or used as a python module
+    from slackup import SlackUp
+    s = Slackup()
+    s.post("ehlo world")
