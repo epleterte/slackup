@@ -58,7 +58,7 @@ Examples
 ========
 ::
 
-    echo 'HELLO' | slackup -c 'someotherchannel' -f -
-    slackup "greetings fellow kids"
-    slackup -s -f inputfile.txt
+    echo 'HELLO' | slackops -c 'someotherchannel' -f -
+    slackops "greetings fellow kids"
+    slackops -s -f inputfile.txt
     
