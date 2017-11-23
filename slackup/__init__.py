@@ -8,7 +8,7 @@ from slackclient import SlackClient
 
 class SlackUp():
     """ Wrapper around SlackClient """
-    def __init__(self, config):
+    def __init__(self, config={}):
         loglevel = 'warning'
         loglevel_numeric = getattr(logging, loglevel.upper(), None)
         if not isinstance(loglevel_numeric, int):
