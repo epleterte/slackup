@@ -10,7 +10,7 @@ Slackup will read from file if one is passed with ``-f``. If both "message" and 
 ============
 Installation
 ============
-``pip install -U slackup``
+``pip install -U pyslackup``
 
 ======
 Config
