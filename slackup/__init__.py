@@ -73,9 +73,9 @@ class SlackUp():
 
     def _validate(self):
         if self.cfg['slack_token'] == '':
-          return False
+            return False
         if self.cfg['slack_channel'] == '':
-          return False
+            return False
         return True
     def post(self, message):
         """ Post to slack with current config """
@@ -84,13 +84,9 @@ class SlackUp():
             username=self.cfg['slack_username'], icon_emoji=self.cfg['slack_emoji']
         )
         if 'ok' in response:
-            if response['ok']:
-              return True
-            else:
-              logging.error("Error sending message: %s" % (response['error']))
-              return False
-        else:
-            return False
+            return True
+        logging.error("Error sending message: %s", response['error'])
+        return False
     def post_attachment(self, message):
         """ Post to slack with 'message' as attachment with current config """
         response = self.slack.api_call(
@@ -98,10 +94,6 @@ class SlackUp():
             username=self.cfg['slack_username'], icon_emoji=self.cfg['slack_emoji']
         )
         if 'ok' in response:
-            if response['ok']:
-              return True
-            else:
-              logging.error("Error sending message: %s" % (response['error']))
-              return False
-        else:
-            return False
+            return True
+        logging.error("Error sending message: %s", response['error'])
+        return False
