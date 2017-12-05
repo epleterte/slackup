@@ -33,8 +33,8 @@ class SlackUp():
         if not os.path.exists(config_path):
             config_path = "/etc/slackup.yml"
         if os.path.exists(config_path):
-            if oct(os.stat(config_path).st_mode)[-4:] != '0644':
-                print('%s does not have the correct permissions - should be 0644' % (config_path))
+            if oct(os.stat(config_path).st_mode)[-4:] != '0600':
+                print('%s does not have the correct permissions - should be 0600' % (config_path))
                 raise OSError
             with open(config_path, 'r') as ymlfile:
                 yml = yaml.load(ymlfile)
