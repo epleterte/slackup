@@ -7,6 +7,11 @@ It supports reading config from a config file, from environment variables and fr
 
 Slackup will read from file if one is passed with ``-f``. If both "message" and file is specified, file input takes precedence. Use ``-f -`` to read from STDIN.
 
+============
+Installation
+============
+``pip install -U slackup``
+
 ======
 Config
 ======
