@@ -8,7 +8,7 @@ from slackclient import SlackClient
 
 class SlackUp():
     """ Wrapper around SlackClient """
-    def __init__(self, config={}):
+    def __init__(self, config={}, custom_config_path=None):
         loglevel = 'warning'
         loglevel_numeric = getattr(logging, loglevel.upper(), None)
         if not isinstance(loglevel_numeric, int):
@@ -23,13 +23,19 @@ class SlackUp():
         }
 
         ## read config from config file
-        config_path = os.path.expanduser("~/.slackup.yml")
+        if custom_config_path:
+            if not os.path.exists(custom_config_path):
+                raise OSError
+            else:
+                config_path = custom_config_path
+        else:
+            config_path = os.path.expanduser("~/.slackup.yml")
         if not os.path.exists(config_path):
             config_path = "/etc/slackup.yml"
         if os.path.exists(config_path):
             if oct(os.stat(config_path).st_mode)[-4:] != '0644':
                 print('%s does not have the correct permissions - should be 0644' % (config_path))
-                sys.exit(1)
+                raise OSError
             with open(config_path, 'r') as ymlfile:
                 yml = yaml.load(ymlfile)
                 # merge config:
