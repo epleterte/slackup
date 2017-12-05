@@ -35,7 +35,7 @@ Usage
 =====
 ::
 
-    usage: slackup [-h] [-v] [-c CHANNEL] [-t TOKEN] [-u USERNAME] [-s] [-f FILE] [message]
+    usage: slackops [-h] [-v] [-c CHANNEL] [-t TOKEN] [-u USERNAME] [-s] [-f FILE] [message]
     
     positional arguments:
       message               message to post to slack
@@ -65,5 +65,5 @@ Examples
 
     # ...or used as a python module
     from slackup import SlackUp
-    s = Slackup()
+    s = SlackUp()
     s.post("ehlo world")
