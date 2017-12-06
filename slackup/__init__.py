@@ -77,21 +77,25 @@ class SlackUp():
         if self.cfg['slack_channel'] == '':
             return False
         return True
-    def post(self, message):
+    def post(self, message, emoji=None):
         """ Post to slack with current config """
+        if not emoji:
+            emoji = self.cfg['slack_emoji']
         response = self.slack.api_call(
             "chat.postMessage", channel=self.cfg['slack_channel'], text=message,
-            username=self.cfg['slack_username'], icon_emoji=self.cfg['slack_emoji']
+            username=self.cfg['slack_username'], icon_emoji=emoji
         )
         if 'ok' in response:
             return True
         logging.error("Error sending message: %s", response['error'])
         return False
-    def post_attachment(self, message):
+    def post_attachment(self, message, emoji=None):
         """ Post to slack with 'message' as attachment with current config """
+        if not emoji:
+            emoji = self.cfg['slack_emoji']
         response = self.slack.api_call(
             "chat.postMessage", channel=self.cfg['slack_channel'], attachments=[{"text": message}],
-            username=self.cfg['slack_username'], icon_emoji=self.cfg['slack_emoji']
+            username=self.cfg['slack_username'], icon_emoji=emoji
         )
         if 'ok' in response:
             return True
