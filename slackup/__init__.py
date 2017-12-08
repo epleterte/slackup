@@ -89,13 +89,21 @@ class SlackUp():
             return True
         logging.error("Error sending message: %s", response['error'])
         return False
-    def post_attachment(self, message, emoji=None, color=None):
+    def post_attachment(self, message, emoji=None, color=None, fallback=None, markdown=True):
         """ Post to slack with 'message' as attachment with current config """
         if not emoji:
             emoji = self.cfg['slack_emoji']
         attachments = [{"text": message}]
         if color:
             attachments[0]['color'] = color
+        if markdown:
+            attachments[0]['mkrdwn_in'] = ['text']
+        if fallback:
+            attachments[0]['fallback'] = fallback
+        else:
+            # XXX: fallback should be a plaintext version stripped of markdown. For now we just post the same.
+            attachments[0]['fallback'] = message
+
         response = self.slack.api_call(
             "chat.postMessage", channel=self.cfg['slack_channel'], attachments=attachments,
             username=self.cfg['slack_username'], icon_emoji=emoji
