@@ -89,12 +89,15 @@ class SlackUp():
             return True
         logging.error("Error sending message: %s", response['error'])
         return False
-    def post_attachment(self, message, emoji=None):
+    def post_attachment(self, message, emoji=None, color=None):
         """ Post to slack with 'message' as attachment with current config """
         if not emoji:
             emoji = self.cfg['slack_emoji']
+        attachments = [{"text": message}]
+        if color:
+            attachments[0]['color'] = color
         response = self.slack.api_call(
-            "chat.postMessage", channel=self.cfg['slack_channel'], attachments=[{"text": message}],
+            "chat.postMessage", channel=self.cfg['slack_channel'], attachments=attachments,
             username=self.cfg['slack_username'], icon_emoji=emoji
         )
         if 'ok' in response:
