@@ -97,7 +97,7 @@ class SlackUp():
         if color:
             attachments[0]['color'] = color
         if markdown:
-            attachments[0]['mkrdwn_in'] = ['text']
+            attachments[0]['mrkdwn_in'] = ['text']
         if fallback:
             attachments[0]['fallback'] = fallback
         else:
